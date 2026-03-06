@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alnova Shop | تحديثات النظام</title>
+    <title>Alnova Shop | تجربة تسوق جديدة</title>
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Montserrat:wght@800;900&display=swap" rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Three.js -->
@@ -14,250 +14,277 @@
 
     <style>
         :root {
-            --primary-color: #2563eb;
-            --secondary-color: #f59e0b;
-            --bg-color: #ffffff;
-            --text-color: #1f2937;
-            --card-bg: #f9fafb;
-            --nav-bg: rgba(255, 255, 255, 0.9);
-            --border-color: #e5e7eb;
-            --transition: all 0.3s ease;
+            --primary: #2563eb;
+            --accent: #6366f1;
+            --dark: #0f172a;
+            --glass-bg: rgba(255, 255, 255, 0.88);
+            --border-glass: rgba(255, 255, 255, 0.5);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            overflow: hidden; /* يمنع السكرول أثناء الصيانة */
+            background-color: #f8fafc;
+            overflow: hidden; 
+            height: 100vh;
+            width: 100vw;
         }
 
-        /* --- واجهة الصيانة الاحترافية --- */
-        .maintenance-overlay {
+        /* --- واجهة الصيانة الفاخرة --- */
+        .maintenance-container {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 99999; /* أعلى من كل شيء */
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(18px); /* تمويه قوي للموقع في الخلفية */
-            -webkit-backdrop-filter: blur(18px);
+            inset: 0;
+            z-index: 10000;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 15px;
+            padding: 15px; /* مسافة أمان للموبايل */
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
         }
 
-        .maintenance-card {
-            background: rgba(255, 255, 255, 0.92);
-            padding: 40px 25px;
-            border-radius: 40px;
-            max-width: 600px;
+        .premium-card {
+            background: var(--glass-bg);
+            max-width: 550px;
             width: 100%;
+            padding: clamp(30px, 8vw, 50px) clamp(20px, 5vw, 40px);
+            border-radius: 35px;
             text-align: center;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.12);
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            animation: fadeInScale 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .brand-header {
-            font-family: 'Montserrat', sans-serif;
-            font-size: clamp(1.8rem, 8vw, 2.8rem); /* حجم متناسق للموبايل */
-            font-weight: 800;
-            color: var(--primary-color);
-            margin-bottom: 25px;
-            white-space: nowrap; /* يمنع الكلمة من النزول لسطر جديد */
-            letter-spacing: -1px;
-            display: inline-block;
-        }
-
-        .maintenance-title {
-            font-size: clamp(1.1rem, 4.5vw, 1.4rem);
-            font-weight: 800;
-            color: #0f172a;
-            margin-bottom: 20px;
-            line-height: 1.6;
-        }
-
-        .maintenance-desc {
-            font-size: clamp(0.9rem, 3.8vw, 1.05rem);
-            color: #475569;
-            margin-bottom: 35px;
-            line-height: 1.8;
-        }
-
-        /* تنسيق الخطوط تحت الكلام */
-        .text-accent {
+            box-shadow: 0 30px 70px rgba(0,0,0,0.1);
+            border: 1px solid var(--border-glass);
+            animation: fadeIn 0.8s ease-out;
             position: relative;
-            display: inline-block;
+        }
+
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(37, 99, 235, 0.08);
+            color: var(--primary);
+            padding: 8px 20px;
+            border-radius: 100px;
+            font-size: clamp(0.75rem, 3vw, 0.9rem);
             font-weight: 700;
-            color: #1e293b;
+            margin-bottom: 20px;
         }
 
-        .text-accent::after {
-            content: '';
-            position: absolute;
-            bottom: 4px;
-            left: 0;
-            width: 100%;
-            height: 8px;
-            background: rgba(37, 99, 235, 0.15);
-            z-index: -1;
+        .pulse-dot {
+            width: 7px;
+            height: 7px;
+            background: var(--primary);
+            border-radius: 50%;
+            animation: pulse-ring 1.5s infinite;
         }
 
-        .developer-info {
-            border-top: 1px solid #e2e8f0;
+        @keyframes pulse-ring {
+            0% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.5); }
+            70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(37, 99, 235, 0); }
+            100% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
+        }
+
+        /* تعديل Alnova Shop ليكون جنباً إلى جنب دائماً */
+        .brand-logo {
+            font-family: 'Montserrat', sans-serif;
+            font-size: clamp(1.7rem, 8.5vw, 3rem); /* حجم مرن جداً للموبايل */
+            font-weight: 900;
+            margin-bottom: 15px;
+            white-space: nowrap; /* يمنع النزول لسطر جديد */
+            letter-spacing: -1px;
+            background: linear-gradient(135deg, #1e293b 0%, #2563eb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: block;
+        }
+
+        .welcome-msg {
+            font-size: clamp(1rem, 4.5vw, 1.3rem);
+            font-weight: 800;
+            color: var(--dark);
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        .desc-text {
+            font-size: clamp(0.85rem, 3.8vw, 1rem);
+            color: #475569;
+            line-height: 1.7;
+            margin-bottom: 30px;
+        }
+
+        .marker {
+            color: var(--primary);
+            font-weight: 700;
+            border-bottom: 2px solid rgba(37, 99, 235, 0.15);
+        }
+
+        /* --- تنسيق قسم المطور المطور (جنباً إلى جنب) --- */
+        .dev-footer {
+            border-top: 1px solid rgba(0,0,0,0.06);
             padding-top: 25px;
-            font-size: 0.95rem;
         }
 
         .dev-link {
-            color: var(--primary-color);
+            font-family: 'Montserrat', sans-serif;
+            font-size: clamp(0.9rem, 4.2vw, 1.15rem); /* حجم مرن للموبايل */
             font-weight: 800;
-            text-decoration: none;
-            font-size: 1.1rem;
-            margin-top: 5px;
-            display: inline-block;
-            transition: 0.3s;
+            color: var(--dark);
+            text-decoration: underline;
+            text-decoration-color: var(--primary);
+            text-underline-offset: 5px;
+            text-decoration-thickness: 2px;
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            white-space: nowrap; /* يمنع انقسام الاسم على سطرين */
         }
 
-        .dev-link:hover {
-            transform: translateY(-2px);
+        .dev-link i {
+            font-size: 0.8rem;
             opacity: 0.8;
         }
 
-        @keyframes fadeInScale {
-            from { opacity: 0; transform: scale(0.9); }
-            to { opacity: 1; transform: scale(1); }
+        .dev-link:hover {
+            color: var(--primary);
+            transform: translateY(-2px);
         }
 
-        /* --- تنسيقات الموقع الأصلي (الخلفية) --- */
-        .site-container {
-            pointer-events: none; /* يمنع التفاعل مع السايت في الخلفية */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- تصميم السايت الأصلي (الخلفية المموهة) --- */
+        .actual-site-bg {
+            filter: blur(10px) grayscale(0.2); 
+            opacity: 0.4;
+            pointer-events: none;
             user-select: none;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
         }
 
         nav {
-            position: fixed; top: 0; width: 100%; background: var(--nav-bg);
-            display: flex; justify-content: space-between; align-items: center; padding: 1rem 5%; z-index: 100;
+            display: flex; justify-content: space-between; align-items: center; padding: 20px 5%;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
         }
-        .hero {
-            height: 100vh;
-            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1920&q=80');
-            background-size: cover; background-position: center; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; color: white;
+        .hero-section {
+            height: 350px;
+            background: linear-gradient(135deg, #1e293b, #2563eb);
+            display: flex; align-items: center; justify-content: center; color: white;
+            text-align: center; margin: 20px 5%; border-radius: 25px;
         }
-        section { padding: 5rem 5%; }
-        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 2rem; }
-        .product-card { background: var(--card-bg); border-radius: 15px; padding: 1rem; border: 1px solid var(--border-color); }
-        .product-img { width: 100%; height: 250px; object-fit: cover; border-radius: 10px; }
-        #three-container { width: 100%; height: 400px; background: #eee; border-radius: 20px; }
+        .grid-preview {
+            display: grid; grid-template-columns: repeat(2, 1fr);
+            gap: 15px; padding: 20px 5%;
+        }
+        .product-box { height: 180px; background: #cbd5e1; border-radius: 20px; }
+        #three-canvas-container { height: 300px; background: #f1f5f9; margin: 20px 5%; border-radius: 25px; }
+
+        @media (max-width: 360px) {
+            .premium-card { padding: 30px 15px; }
+            .brand-logo { font-size: 1.6rem; }
+        }
     </style>
 </head>
 <body>
 
-    <!-- واجهة الصيانة -->
-    <div class="maintenance-overlay">
-        <div class="maintenance-card">
-            <h1 class="brand-header">Alnova Shop</h1>
+    <!-- واجهة الصيانة (الأمامية) -->
+    <div class="maintenance-container">
+        <div class="premium-card">
+            <div class="status-pill">
+                <div class="pulse-dot"></div>
+                تحديثات جارية الآن
+            </div>
+
+            <span class="brand-logo">Alnova Shop</span>
             
-            <h2 class="maintenance-title">
+            <h2 class="welcome-msg">
                 مرحبًا بك .. الموقع حاليًا يخضع لبعض <br>
-                <span class="text-accent">التعديلات والتحسينات</span> <br>
+                <span class="marker">التعديلات والتحسينات</span> <br>
                 لتقديم أفضل تجربة تسويقية آمنة لكم.
             </h2>
             
-            <p class="maintenance-desc">
-                نعتذر عن عدم إتاحة الموقع في الوقت الحالي ونعمل بجد لإطلاق النسخة الجديدة المطورة التي تليق بذوقكم و سيعود المتجر قريبًا <span class="text-accent">بشكل آمن وأفضل</span> مما كان عليه.
+            <p class="desc-text">
+                نعتذر عن عدم إتاحة الموقع في الوقت الحالي ونعمل بجد لإطلاق النسخة الجديدة المطورة التي تليق بذوقكم.
             </p>
 
-            <div class="developer-info">
-                <p style="color: #64748b;">المطور المسؤول عن التحديثات الجديدة:</p>
-                <a href="https://al-zain.site" target="_blank" class="dev-link">Mohamed Al-Zain</a>
+            <div class="dev-footer">
+                <p style="font-size: 0.8rem; color: #94a3b8; margin-bottom: 10px; letter-spacing: 0.5px;">المطور المسؤول عن التحديثات الجديدة :</p>
+                <a href="https://al-zain.site" target="_blank" class="dev-link">
+                    MOHAMED AL-ZAIN
+                    <i class="fas fa-external-link-alt"></i>
+                </a>
             </div>
         </div>
     </div>
 
-    <!-- محتوى السايت الأصلي في الضهر -->
-    <div class="site-container">
+    <!-- السايت الأصلي (الخلفية) -->
+    <div class="actual-site-bg">
         <nav>
-            <div style="font-size: 1.8rem; font-weight: 700; color: var(--primary-color);">LUXE MODE</div>
-            <div style="display: flex; gap: 20px;">
-                <span>الرئيسية</span>
-                <span>المتجر</span>
-                <i class="fas fa-shopping-cart"></i>
-            </div>
+            <div style="font-weight: 900; font-size: 1.4rem; color: #2563eb; font-family: 'Montserrat';">LUXE MODE</div>
+            <div style="font-size: 1.1rem;"><i class="fas fa-shopping-bag"></i></div>
         </nav>
 
-        <section class="hero">
-            <h1 style="font-size: 3rem;">اكتشف أسلوبك الخاص</h1>
-            <p>أحدث صيحات الموضة العالمية</p>
-        </section>
-
-        <section>
-            <div style="text-align: center; margin-bottom: 3rem;"><h2>الأقسام</h2></div>
-            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
-                <div style="height: 200px; background: #ddd; border-radius: 15px;"></div>
-                <div style="height: 200px; background: #ddd; border-radius: 15px;"></div>
-                <div style="height: 200px; background: #ddd; border-radius: 15px;"></div>
+        <div class="hero-section">
+            <div>
+                <h1 style="font-size: 2.2rem; margin-bottom: 10px; font-weight: 900;">NEW LOOK</h1>
+                <p style="font-size: 1rem; opacity: 0.9;">Coming Soon</p>
             </div>
-        </section>
+        </div>
 
-        <section id="shop">
-            <div style="text-align: center; margin-bottom: 3rem;"><h2>أحدث المنتجات</h2></div>
-            <div class="products-grid">
-                <div class="product-card">
-                    <img src="https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=400&q=80" class="product-img">
-                    <h3 style="margin-top: 10px;">قميص كلاسيك</h3>
-                    <p style="color: blue; font-weight: bold;">450 ج.م</p>
-                </div>
-                <div class="product-card">
-                    <img src="https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?auto=format&fit=crop&w=400&q=80" class="product-img">
-                    <h3 style="margin-top: 10px;">فستان صيفي</h3>
-                    <p style="color: blue; font-weight: bold;">890 ج.م</p>
-                </div>
-                <div class="product-card">
-                    <img src="https://images.unsplash.com/photo-1521223890158-f9f7c3d5d50d?auto=format&fit=crop&w=400&q=80" class="product-img">
-                    <h3 style="margin-top: 10px;">جاكيت جينز</h3>
-                    <p style="color: blue; font-weight: bold;">1200 ج.م</p>
-                </div>
-            </div>
-        </section>
+        <div class="grid-preview">
+            <div class="product-box"></div>
+            <div class="product-box"></div>
+        </div>
 
-        <section>
-            <div id="three-container"></div>
-        </section>
+        <div id="three-canvas-container"></div>
     </div>
 
     <script>
-        // تشغيل الـ 3D في الخلفية ليعطي انطباع أن الموقع حي
+        // تشغيل معاينة الـ 3D في الخلفية لإعطاء حياة للموقع
         let scene, camera, renderer, shirt;
-        function init3D() {
-            const container = document.getElementById('three-container');
+        function initBackground3D() {
+            const container = document.getElementById('three-canvas-container');
             if(!container) return;
+            
             scene = new THREE.Scene();
             camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
             camera.position.z = 3;
+
             renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
             renderer.setSize(container.clientWidth, container.clientHeight);
             container.appendChild(renderer.domElement);
 
             const group = new THREE.Group();
-            const bodyGeo = new THREE.BoxGeometry(1, 1.4, 0.4);
             const material = new THREE.MeshPhongMaterial({ color: 0x2563eb });
-            shirt = new THREE.Mesh(bodyGeo, material);
-            group.add(shirt);
+            const shirtBody = new THREE.Mesh(new THREE.BoxGeometry(1, 1.5, 0.4), material);
+            group.add(shirtBody);
+
             scene.add(new THREE.AmbientLight(0xffffff, 0.8));
+            const pointLight = new THREE.PointLight(0xffffff, 1);
+            pointLight.position.set(5, 5, 5);
+            scene.add(pointLight);
             scene.add(group);
 
             function animate() {
                 requestAnimationFrame(animate);
-                group.rotation.y += 0.01;
+                group.rotation.y += 0.015;
                 renderer.render(scene, camera);
             }
             animate();
+
+            window.addEventListener('resize', () => {
+                camera.aspect = container.clientWidth / container.clientHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(container.clientWidth, container.clientHeight);
+            });
         }
-        window.onload = init3D;
+
+        window.onload = initBackground3D;
     </script>
 </body>
 </html>
