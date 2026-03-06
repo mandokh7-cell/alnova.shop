@@ -3,296 +3,258 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alnova Shop</title>
-    <!-- Google Fonts: Tajawal for Arabic, Playfair Display for Luxury English vibe -->
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,700;1,700&family=Montserrat:wght@300;500;600&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Alnova Shop | تحت الصيانة والتطوير</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Three.js for 3D View -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
     <style>
         :root {
-            --luxury-gold: #c5a059;
-            --deep-navy: #050a14;
-            --glass-white: rgba(255, 255, 255, 0.05);
+            --primary-color: #2563eb;
+            --secondary-color: #f59e0b;
+            --bg-color: #ffffff;
+            --text-color: #1f2937;
+            --card-bg: #f9fafb;
+            --nav-bg: rgba(255, 255, 255, 0.9);
+            --border-color: #e5e7eb;
+            --transition: all 0.3s ease;
         }
 
-        body, html {
+        [data-theme="dark"] {
+            --bg-color: #0f172a;
+            --text-color: #f1f5f9;
+            --card-bg: #1e293b;
+            --nav-bg: rgba(15, 23, 42, 0.9);
+            --border-color: #334155;
+        }
+
+        * {
             margin: 0;
             padding: 0;
-            width: 100%;
-            height: 100%;
-            font-family: 'Tajawal', sans-serif;
-            background-color: var(--deep-navy);
-            overflow: hidden;
-            color: white;
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
         }
 
-        /* --- Simulated Real Store Background --- */
-        .real-store-bg {
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow: hidden; /* Prevent scrolling during maintenance */
+            transition: var(--transition);
+        }
+
+        /* --- Maintenance Overlay Styles --- */
+        .maintenance-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 1;
-            filter: blur(25px); /* Strong Blur as requested */
-            transform: scale(1.1); /* Prevent white edges from blur */
-            pointer-events: none;
-            user-select: none;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .fake-header {
-            height: 80px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 5%;
-        }
-
-        .fake-hero {
-            height: 50vh;
-            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=2070&auto=format&fit=crop') center/cover;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .fake-products {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-            padding: 40px 5%;
-        }
-
-        .fake-product-card {
-            height: 350px;
-            background: #111;
-            border-radius: 4px;
-            overflow: hidden;
-        }
-
-        .fake-product-img {
-            height: 70%;
-            background: #222;
-        }
-
-        /* --- Maintenance Overlay --- */
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 10;
-            background: radial-gradient(circle at center, rgba(5, 10, 20, 0.4) 0%, rgba(5, 10, 20, 0.9) 100%);
+            z-index: 9999;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px); /* Strong blur effect */
+            -webkit-backdrop-filter: blur(15px);
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 20px;
         }
 
-        /* --- Luxury Glass Card --- */
         .maintenance-card {
-            background: rgba(10, 15, 25, 0.7);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(197, 160, 89, 0.3); /* Soft Gold Border */
-            border-radius: 40px;
-            padding: 60px 40px;
-            max-width: 750px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 3rem 2rem;
+            border-radius: 30px;
+            max-width: 650px;
             width: 100%;
             text-align: center;
-            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(197, 160, 89, 0.05);
-            position: relative;
-            animation: cardEntrance 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            animation: cardFadeIn 0.8s ease-out;
         }
 
-        @keyframes cardEntrance {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+        [data-theme="dark"] .maintenance-card {
+            background: rgba(30, 41, 59, 0.95);
+            border-color: rgba(255, 255, 255, 0.1);
         }
 
-        .gold-brand {
-            font-family: 'Playfair Display', serif;
-            color: var(--luxury-gold);
-            font-size: 3.5rem;
-            letter-spacing: 2px;
-            margin-bottom: 10px;
-            text-shadow: 0 0 15px rgba(197, 160, 89, 0.2);
-        }
-
-        .status-badge {
-            display: inline-block;
-            padding: 6px 16px;
-            border: 1px solid var(--luxury-gold);
-            color: var(--luxury-gold);
-            border-radius: 50px;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 30px;
-            background: rgba(197, 160, 89, 0.05);
-        }
-
-        .message-title {
-            font-size: 1.8rem;
+        .alnova-brand {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.5rem;
             font-weight: 700;
-            margin-bottom: 20px;
-            line-height: 1.4;
-            color: #ffffff;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            letter-spacing: -1px;
+            text-transform: uppercase;
         }
 
-        .message-body {
+        .welcome-msg {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-color);
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+
+        .maintenance-text {
             font-size: 1.1rem;
-            color: rgba(255, 255, 255, 0.7);
+            color: #64748b;
+            margin-bottom: 2.5rem;
             line-height: 1.8;
-            margin-bottom: 40px;
-            font-weight: 300;
         }
 
-        /* --- Animated Loader --- */
-        .luxury-loader {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            margin-bottom: 30px;
+        .highlight-text {
+            text-decoration: underline;
+            text-decoration-color: var(--primary-color);
+            text-underline-offset: 5px;
+            font-weight: 600;
         }
 
-        .luxury-loader div {
-            width: 10px;
-            height: 10px;
-            background: var(--luxury-gold);
-            border-radius: 50%;
-            animation: loaderBounce 1.4s infinite ease-in-out both;
-        }
-
-        .luxury-loader div:nth-child(1) { animation-delay: -0.32s; }
-        .luxury-loader div:nth-child(2) { animation-delay: -0.16s; }
-
-        @keyframes loaderBounce {
-            0%, 80%, 100% { transform: scale(0); opacity: 0.3; }
-            40% { transform: scale(1); opacity: 1; }
-        }
-
-        .dev-footer {
-            margin-top: 40px;
-            padding-top: 30px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .dev-name {
-            font-size: 0.9rem;
-            color: rgba(255,255,255,0.5);
+        .dev-credit {
+            border-top: 1px solid var(--border-color);
+            padding-top: 1.5rem;
+            font-size: 0.95rem;
+            color: var(--text-color);
         }
 
         .dev-link {
-            color: var(--luxury-gold);
+            color: var(--primary-color);
+            font-weight: 700;
             text-decoration: none;
-            font-weight: 600;
-            padding-bottom: 2px;
-            border-bottom: 1px solid transparent;
-            transition: 0.3s;
+            border-bottom: 2px solid transparent;
+            transition: var(--transition);
         }
 
         .dev-link:hover {
-            border-color: var(--luxury-gold);
-            letter-spacing: 1px;
+            border-bottom-color: var(--primary-color);
         }
 
-        /* Responsive Fixes */
-        @media (max-width: 640px) {
-            .gold-brand { font-size: 2.5rem; }
-            .message-title { font-size: 1.4rem; }
-            .maintenance-card { padding: 40px 20px; }
-            .fake-products { grid-template-columns: 1fr 1fr; }
+        @keyframes cardFadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
         }
+
+        /* --- Original Site Styles (Remains the same) --- */
+        nav {
+            position: fixed; top: 0; width: 100%; background: var(--nav-bg);
+            backdrop-filter: blur(10px); display: flex; justify-content: space-between;
+            align-items: center; padding: 1rem 5%; z-index: 1000;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .logo { font-size: 1.8rem; font-weight: 700; color: var(--primary-color); }
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1920&q=80');
+            background-size: cover; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white;
+        }
+        section { padding: 5rem 5%; }
+        .section-title { text-align: center; margin-bottom: 3rem; }
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2rem; }
+        .product-card { background: var(--card-bg); border-radius: 15px; padding: 1rem; border: 1px solid var(--border-color); }
+        .product-img { width: 100%; height: 300px; object-fit: cover; border-radius: 10px; }
+        #three-container { width: 100%; height: 400px; background: var(--card-bg); border-radius: 20px; }
     </style>
 </head>
-<body>
+<body data-theme="light">
 
-    <!-- المتجر الحقيقي في الخلفية (مضبب) -->
-    <div class="real-store-bg">
-        <div class="fake-header">
-            <div class="text-2xl font-bold opacity-30">ALNOVA</div>
-            <div class="flex gap-8 opacity-20">
-                <span>Collections</span>
-                <span>Men</span>
-                <span>Women</span>
-                <span>Sale</span>
-            </div>
-            <div class="w-10 h-10 rounded-full bg-white opacity-10"></div>
-        </div>
-        <div class="fake-hero">
-            <div class="text-center opacity-20">
-                <h1 class="text-6xl font-serif italic mb-4">Summer Collection</h1>
-                <div class="h-1 w-32 bg-white mx-auto"></div>
-            </div>
-        </div>
-        <div class="fake-products">
-            <div class="fake-product-card">
-                <div class="fake-product-img" style="background: url('https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1920&auto=format&fit=crop') center/cover;"></div>
-            </div>
-            <div class="fake-product-card">
-                <div class="fake-product-img" style="background: url('https://images.unsplash.com/photo-1539109132314-3477524c8d35?q=80&w=1920&auto=format&fit=crop') center/cover;"></div>
-            </div>
-            <div class="fake-product-card">
-                <div class="fake-product-img" style="background: url('https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=1920&auto=format&fit=crop') center/cover;"></div>
-            </div>
-            <div class="fake-product-card">
-                <div class="fake-product-img" style="background: url('https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=1920&auto=format&fit=crop') center/cover;"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- طبقة الصيانة الفخمة -->
-    <div class="overlay">
+    <!-- Maintenance Overlay -->
+    <div class="maintenance-overlay">
         <div class="maintenance-card">
-            <div class="status-badge">Website Currently Under Maintenance</div>
+            <div class="alnova-brand">Alnova Shop</div>
             
-            <div class="luxury-loader">
-                <div></div>
-                <div></div>
-                <div></div>
-            </div>
-
-            <h1 class="gold-brand">Alnova Shop</h1>
-            
-            <h2 class="message-title">
-             مرحبًا بك .. الموقع حاليًا يخضع لبعض التعديلات والتحسينات<br>
-                <span style="font-weight: 300; opacity: 0.9;">لتقديم أفضل تجربة تسويقية آمنة لكم.</span>
+            <h2 class="welcome-msg">
+                مرحبًا بك .. الموقع حاليًا يخضع لبعض <span class="highlight-text">التعديلات والتحسينات</span> لتقديم أفضل تجربة تسويقية آمنة لكم.
             </h2>
-
-            <p class="message-body">
-                نعتذر عن عدم إتاحة الموقع في الوقت الحالي ، نعمل بجد لإطلاق النسخة الجديدة المطورة التي تليق بذوقكم. وسيعود المتجر قريباً بشكل أفضل مما كان عليه.
+            
+            <p class="maintenance-text">
+                نعتذر عن عدم إتاحة الموقع في الوقت الحالي ونعمل بجد لإطلاق النسخة الجديدة المطورة التي تليق بذوقكم و سيعود المتجر قريبًا <span class="highlight-text">بشكل آمن وأفضل</span> مما كان عليه.
             </p>
 
-            <div class="dev-footer">
-                <p class="dev-name">المطور المسؤول عن التحديثات الجديدة</p>
-                <p class="text-xl mt-2">
-                    Mohamed 
-                    <a href="https://al-zain.site" target="_blank" class="dev-link">Al-Zain</a>
-                </p>
+            <div class="dev-credit">
+                المطور المسؤول عن التحديثات الجديدة: 
+                <a href="https://al-zain.site" target="_blank" class="dev-link">Mohamed Al-Zain</a>
             </div>
         </div>
     </div>
 
-    <script>
-        // تعطيل أي تفاعل بالماوس أو لوحة المفاتيح لضمان عدم الوصول للخلفية
-        document.addEventListener('contextmenu', e => e.preventDefault());
-        document.addEventListener('keydown', e => {
-            if (e.ctrlKey && (e.key === 'u' || e.key === 's' || e.key === 'i')) {
-                e.preventDefault();
-            }
-        });
+    <!-- Original Background Content (Blurred and Inaccessible) -->
+    <nav>
+        <div class="logo">LUXE MODE</div>
+        <div class="nav-icons">
+            <i class="fas fa-moon"></i>
+            <i class="fas fa-shopping-cart"></i>
+        </div>
+    </nav>
 
-        // حركة بسيطة للماوس تعطي إحساساً بالفخامة (Parallax Effect)
-        document.addEventListener('mousemove', (e) => {
-            const card = document.querySelector('.maintenance-card');
-            const x = (window.innerWidth / 2 - e.pageX) / 50;
-            const y = (window.innerHeight / 2 - e.pageY) / 50;
-            card.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
-        });
+    <section class="hero">
+        <h1>اكتشف أسلوبك الخاص</h1>
+        <p>أحدث صيحات الموضة العالمية بين يديك الآن</p>
+    </section>
+
+    <section id="shop">
+        <div class="section-title">
+            <h2>أحدث المنتجات</h2>
+        </div>
+        <div class="products-grid">
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=400&q=80" class="product-img">
+                <h3>منتج تجريبي 1</h3>
+                <p>450 ج.م</p>
+            </div>
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?auto=format&fit=crop&w=400&q=80" class="product-img">
+                <h3>منتج تجريبي 2</h3>
+                <p>890 ج.م</p>
+            </div>
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1521223890158-f9f7c3d5d50d?auto=format&fit=crop&w=400&q=80" class="product-img">
+                <h3>منتج تجريبي 3</h3>
+                <p>1200 ج.م</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="3d-preview">
+        <div class="section-title">
+            <h2>معاينة 3D تفاعلية</h2>
+        </div>
+        <div id="three-container"></div>
+    </section>
+
+    <script>
+        // Initialize 3D just to keep the background looking realistic
+        let scene, camera, renderer, shirt;
+
+        function init3D() {
+            const container = document.getElementById('three-container');
+            if(!container) return;
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+            camera.position.z = 3;
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            container.appendChild(renderer.domElement);
+
+            const group = new THREE.Group();
+            const bodyGeo = new THREE.BoxGeometry(1, 1.4, 0.4);
+            const material = new THREE.MeshPhongMaterial({ color: 0x2563eb });
+            shirt = new THREE.Mesh(bodyGeo, material);
+            group.add(shirt);
+            scene.add(new THREE.AmbientLight(0xffffff, 0.5));
+            scene.add(group);
+
+            function animate() {
+                requestAnimationFrame(animate);
+                group.rotation.y += 0.01;
+                renderer.render(scene, camera);
+            }
+            animate();
+        }
+
+        window.onload = init3D;
     </script>
 </body>
 </html>
