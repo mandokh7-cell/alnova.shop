@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alnova Shop</title>
+    <!-- Google Fonts: Tajawal for Arabic, Playfair Display for Luxury English vibe -->
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,700;1,700&family=Montserrat:wght@300;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --luxury-gold: #c5a059;
+            --deep-navy: #050a14;
+            --glass-white: rgba(255, 255, 255, 0.05);
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: 'Tajawal', sans-serif;
+            background-color: var(--deep-navy);
+            overflow: hidden;
+            color: white;
+        }
+
+        /* --- Simulated Real Store Background --- */
+        .real-store-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            filter: blur(25px); /* Strong Blur as requested */
+            transform: scale(1.1); /* Prevent white edges from blur */
+            pointer-events: none;
+            user-select: none;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .fake-header {
+            height: 80px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 5%;
+        }
+
+        .fake-hero {
+            height: 50vh;
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=2070&auto=format&fit=crop') center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .fake-products {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            padding: 40px 5%;
+        }
+
+        .fake-product-card {
+            height: 350px;
+            background: #111;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .fake-product-img {
+            height: 70%;
+            background: #222;
+        }
+
+        /* --- Maintenance Overlay --- */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            background: radial-gradient(circle at center, rgba(5, 10, 20, 0.4) 0%, rgba(5, 10, 20, 0.9) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        /* --- Luxury Glass Card --- */
+        .maintenance-card {
+            background: rgba(10, 15, 25, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(197, 160, 89, 0.3); /* Soft Gold Border */
+            border-radius: 40px;
+            padding: 60px 40px;
+            max-width: 750px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(197, 160, 89, 0.05);
+            position: relative;
+            animation: cardEntrance 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes cardEntrance {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .gold-brand {
+            font-family: 'Playfair Display', serif;
+            color: var(--luxury-gold);
+            font-size: 3.5rem;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            text-shadow: 0 0 15px rgba(197, 160, 89, 0.2);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border: 1px solid var(--luxury-gold);
+            color: var(--luxury-gold);
+            border-radius: 50px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 30px;
+            background: rgba(197, 160, 89, 0.05);
+        }
+
+        .message-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.4;
+            color: #ffffff;
+        }
+
+        .message-body {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.8;
+            margin-bottom: 40px;
+            font-weight: 300;
+        }
+
+        /* --- Animated Loader --- */
+        .luxury-loader {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 30px;
+        }
+
+        .luxury-loader div {
+            width: 10px;
+            height: 10px;
+            background: var(--luxury-gold);
+            border-radius: 50%;
+            animation: loaderBounce 1.4s infinite ease-in-out both;
+        }
+
+        .luxury-loader div:nth-child(1) { animation-delay: -0.32s; }
+        .luxury-loader div:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes loaderBounce {
+            0%, 80%, 100% { transform: scale(0); opacity: 0.3; }
+            40% { transform: scale(1); opacity: 1; }
+        }
+
+        .dev-footer {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .dev-name {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.5);
+        }
+
+        .dev-link {
+            color: var(--luxury-gold);
+            text-decoration: none;
+            font-weight: 600;
+            padding-bottom: 2px;
+            border-bottom: 1px solid transparent;
+            transition: 0.3s;
+        }
+
+        .dev-link:hover {
+            border-color: var(--luxury-gold);
+            letter-spacing: 1px;
+        }
+
+        /* Responsive Fixes */
+        @media (max-width: 640px) {
+            .gold-brand { font-size: 2.5rem; }
+            .message-title { font-size: 1.4rem; }
+            .maintenance-card { padding: 40px 20px; }
+            .fake-products { grid-template-columns: 1fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- المتجر الحقيقي في الخلفية (مضبب) -->
+    <div class="real-store-bg">
+        <div class="fake-header">
+            <div class="text-2xl font-bold opacity-30">ALNOVA</div>
+            <div class="flex gap-8 opacity-20">
+                <span>Collections</span>
+                <span>Men</span>
+                <span>Women</span>
+                <span>Sale</span>
+            </div>
+            <div class="w-10 h-10 rounded-full bg-white opacity-10"></div>
+        </div>
+        <div class="fake-hero">
+            <div class="text-center opacity-20">
+                <h1 class="text-6xl font-serif italic mb-4">Summer Collection</h1>
+                <div class="h-1 w-32 bg-white mx-auto"></div>
+            </div>
+        </div>
+        <div class="fake-products">
+            <div class="fake-product-card">
+                <div class="fake-product-img" style="background: url('https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1920&auto=format&fit=crop') center/cover;"></div>
+            </div>
+            <div class="fake-product-card">
+                <div class="fake-product-img" style="background: url('https://images.unsplash.com/photo-1539109132314-3477524c8d35?q=80&w=1920&auto=format&fit=crop') center/cover;"></div>
+            </div>
+            <div class="fake-product-card">
+                <div class="fake-product-img" style="background: url('https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=1920&auto=format&fit=crop') center/cover;"></div>
+            </div>
+            <div class="fake-product-card">
+                <div class="fake-product-img" style="background: url('https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=1920&auto=format&fit=crop') center/cover;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- طبقة الصيانة الفخمة -->
+    <div class="overlay">
+        <div class="maintenance-card">
+            <div class="status-badge">Website Currently Under Maintenance</div>
+            
+            <div class="luxury-loader">
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+
+            <h1 class="gold-brand">Alnova Shop</h1>
+            
+            <h2 class="message-title">
+             مرحبًا بك .. الموقع حاليًا يخضع لبعض التعديلات والتحسينات<br>
+                <span style="font-weight: 300; opacity: 0.9;">لتقديم أفضل تجربة تسويقية آمنة لكم.</span>
+            </h2>
+
+            <p class="message-body">
+                نعتذر عن عدم إتاحة الموقع في الوقت الحالي ، نعمل بجد لإطلاق النسخة الجديدة المطورة التي تليق بذوقكم. وسيعود المتجر قريباً بشكل أفضل مما كان عليه.
+            </p>
+
+            <div class="dev-footer">
+                <p class="dev-name">المطور المسؤول عن التحديثات الجديدة</p>
+                <p class="text-xl mt-2">
+                    Mohamed 
+                    <a href="https://al-zain.site" target="_blank" class="dev-link">Al-Zain</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // تعطيل أي تفاعل بالماوس أو لوحة المفاتيح لضمان عدم الوصول للخلفية
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.addEventListener('keydown', e => {
+            if (e.ctrlKey && (e.key === 'u' || e.key === 's' || e.key === 'i')) {
+                e.preventDefault();
+            }
+        });
+
+        // حركة بسيطة للماوس تعطي إحساساً بالفخامة (Parallax Effect)
+        document.addEventListener('mousemove', (e) => {
+            const card = document.querySelector('.maintenance-card');
+            const x = (window.innerWidth / 2 - e.pageX) / 50;
+            const y = (window.innerHeight / 2 - e.pageY) / 50;
+            card.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
+        });
+    </script>
+</body>
+</html>
+
